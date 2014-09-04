@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The core algorithm which turns a ranking of solutions into a grade based on a
@@ -30,17 +32,18 @@ public class RankingGrader {
 	 * between the wrongly ordered solutions.
 	 * 
 	 * @param grades
-	 *            a grade for each solution appearing in the ranking
+	 *            a grade between 0.0 (worst) and 100.0 (best) for each solution
+	 *            appearing in the ranking
 	 * @param r
-	 *            the ranking to be graded
+	 *            an ordered list of solutions from best to worth
 	 * @return a grade between 0.0 and 100.0
 	 */
-	public static double grade(SolutionGrades grades, Ranking r) {
+	public static double grade(Map<Solution, Double> grades, List<Solution> r) {
 		Collection<SolutionPair> pairs = getPairs(r);
 
 		double maxPoints = 0, points = 0;
 		for (SolutionPair p : pairs) {
-			double dif = grades.getGrade(p.better) - grades.getGrade(p.worse);
+			double dif = grades.get(p.better) - grades.get(p.worse);
 			double absDif = Math.abs(dif);
 
 			maxPoints += absDif;
@@ -61,7 +64,7 @@ public class RankingGrader {
 		}
 	}
 
-	private static Collection<SolutionPair> getPairs(Ranking r) {
+	private static Collection<SolutionPair> getPairs(List<Solution> r) {
 		ArrayList<SolutionPair> result = new ArrayList<>(r.size());
 
 		for (int i = 0; i < r.size() - 1; i++)
