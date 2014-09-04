@@ -16,30 +16,31 @@ public class RankingGrader {
 	/**
 	 * Turn a ranking of solutions into a grade based on the given grade for
 	 * each solution. Wrong ordering of solutions which have a very similar
-	 * grade (less than TOLERANCE % distance) are ignored. Wrong ordering of
-	 * solutions with a higher grade distance are punished proportionally to the
-	 * grade distance.
+	 * grade (less than <code>TOLERANCE</code> distance) are ignored. Wrong
+	 * ordering of solutions with a higher grade distance are punished
+	 * proportionally to the grade distance.
 	 * <p>
 	 * The ranking creates an order for each pair of solutions. E.g. the ranking
-	 * (s1, s5, s2) results in the relations s1 >= s5, s1 >= s2, s5 >= s2. A
-	 * relation sX >= sY is considered as correct if
+	 * <code>(s1, s5, s2)</code> results in the relations
+	 * <code>s1 >= s5, s1 >= s2, s5 >= s2</code>. A relation
+	 * <code>sX >= sY</code> is considered as correct if
 	 * <p>
-	 * |grade(sX) - grade(sY)| <= TOLERANCE OR grade(sX) > grade(sY)
+	 * <code>|grade(sX) - grade(sY)| <= TOLERANCE OR grade(sX) > grade(sY)</code>
 	 * <p>
 	 * 
 	 * If all resulting relations are correct, the returned grade is 100. Each
-	 * wrong relation decreases the grade proportionally to the grade distance
-	 * between the wrongly ordered solutions.
+	 * wrong relation decreases the grade.
 	 * 
 	 * @param grades
 	 *            a grade between 0.0 (worst) and 100.0 (best) for each solution
 	 *            appearing in the ranking
-	 * @param r
+	 * @param ranking
 	 *            an ordered list of solutions from best to worth
-	 * @return a grade between 0.0 and 100.0
+	 * @return a grade between 0.0 (worst) and 100.0 (best)
 	 */
-	public static double grade(Map<Solution, Double> grades, List<Solution> r) {
-		Collection<SolutionPair> pairs = getPairs(r);
+	public static double grade(Map<Solution, Double> grades,
+			List<Solution> ranking) {
+		Collection<SolutionPair> pairs = getPairs(ranking);
 
 		double maxPoints = 0, points = 0;
 		for (SolutionPair p : pairs) {
