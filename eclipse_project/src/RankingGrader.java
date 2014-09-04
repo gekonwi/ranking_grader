@@ -49,7 +49,7 @@ public class RankingGrader {
 				points += absDif;
 		}
 
-		return maxPoints / points * 100.0;
+		return points / maxPoints * 100.0;
 	}
 
 	private static class SolutionPair {
